@@ -7,7 +7,7 @@ A collection of skills for my AI coding agents.
 This repository acts as a mono-repo for various AI agent skills. Install any skill globally by running:
 
 ```bash
-npx skills add <your-username>/agent-skills@<skill-name>
+npx skills add mderazon/agent-skills@<skill-name>
 ```
 
 ## Current Skills
