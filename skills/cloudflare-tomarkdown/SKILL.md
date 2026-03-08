@@ -21,9 +21,13 @@ Use this skill to convert URLs or local files (PDFs, Images, HTML, CSV, Office d
 
 ## Setup & Authentication
 
-This skill requires `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` to be configured as environment variables. 
+This skill requires `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. 
 
-**Instruction for the Agent:** If you attempt to use this skill and it fails due to missing environment variables, STOP and explicitly ask the user to provide their Cloudflare Account ID and API Token. You can suggest they export them in their shell or add them to their project's `.env` file.
+**Automatic Setup:** For convenience, the script automatically looks for a `.env` file in the current directory or its parents. If you have a `.env` file in your project root, it will work out of the box.
+
+**Manual Setup:** Alternatively, you can export them in your shell or pass them as parameters (`--account` and `--token`).
+
+**Instruction for the Agent:** If the skill fails due to missing environment variables, check if a `.env` file exists in the workspace. If not, STOP and ask the user for their Cloudflare credentials.
 
 ### Scraping a URL
 
@@ -57,14 +61,22 @@ bash scripts/render.sh --file "cat.jpeg" \
   --options '{"image": {"descriptionLanguage": "es"}}'
 ```
 
-### Excluding PDF Metadata
+### Advanced Options for JS-Heavy Sites
 
-Sometimes PDFs contain messy metadata that you want to ignore.
+If a site requires complex JavaScript rendering or redirects, use the browser method with specific wait conditions.
 
 ```bash
-bash scripts/render.sh --file "presentation.pdf" \
-  --options '{"pdf": {"metadata": false}}'
+# Wait for network to be idle before extracting content
+bash scripts/render.sh --url "https://complex-site.com" --wait "networkidle2"
+
+# Wait for a specific element to appear (e.g. price or main content)
+bash scripts/render.sh --url "https://shop.com/prod" --selector ".product-price"
+
+# Increase timeout for slow pages (in milliseconds)
+bash scripts/render.sh --url "https://slow-site.com" --timeout 60000
 ```
+
+Valid `--wait` options are: `load`, `domcontentloaded` (default), `networkidle0`, and `networkidle2`.
 
 ## How It Works Intelligently
 
