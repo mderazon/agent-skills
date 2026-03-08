@@ -12,7 +12,7 @@ npx skills add <your-username>/agent-skills@<skill-name>
 
 ## Current Skills
 
-- **[cloudflare-markdown](./skills/cloudflare-markdown)**: Convert URLs, images, PDFs, and documents to clean Markdown using Cloudflare APIs. Includes a fallback between Browser Rendering and Workers AI.
+- **[cloudflare-tomarkdown](./skills/cloudflare-tomarkdown)**: Convert URLs, images, PDFs, and documents to clean Markdown using Cloudflare APIs. Includes a fallback between Browser Rendering and Workers AI.
 
 ## How to use
 

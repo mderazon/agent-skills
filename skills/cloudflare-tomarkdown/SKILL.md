@@ -1,5 +1,5 @@
 ---
-name: cloudflare-markdown
+name: cloudflare-tomarkdown
 description: Convert URLs, images, PDFs, and documents to clean Markdown using Cloudflare APIs. Scraping tool with image AI summarization and JS-rendering fallback.
 references:
   - cloudflare@workers-ai
