@@ -55,8 +55,9 @@ let accountId = options.account || process.env.CLOUDFLARE_ACCOUNT_ID;
 let apiToken = options.token || process.env.CLOUDFLARE_API_TOKEN;
 
 if (!accountId || !apiToken) {
-  const envPaths = ['.env', '../.env', '../../.env'];
-  for (const envPath of envPaths) {
+  let currentDir = process.cwd();
+  while (true) {
+    const envPath = path.join(currentDir, '.env');
     try {
       if (fs.existsSync(envPath)) {
         const content = fs.readFileSync(envPath, 'utf-8');
@@ -66,7 +67,6 @@ if (!accountId || !apiToken) {
           if (match) {
             const key = match[1];
             let value = match[2].trim().replace(/^['"]|['"]$/g, '');
-            // Strip any trailing comments
             value = value.split(/\s+#/)[0].trim();
             if (key === 'CLOUDFLARE_ACCOUNT_ID' && !accountId) accountId = value;
             if (key === 'CLOUDFLARE_API_TOKEN' && !apiToken) apiToken = value;
@@ -75,6 +75,9 @@ if (!accountId || !apiToken) {
         if (accountId && apiToken) break;
       }
     } catch(e) {}
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) break;
+    currentDir = parentDir;
   }
 }
 
@@ -227,7 +230,11 @@ async function main() {
           printSafeOutput(data.result);
           process.exit(0);
         } else {
-          errorExit("Browser Rendering failed.", data);
+          let extraHint = '';
+          if (data.errors && data.errors.some(e => e.code === 10000)) {
+            extraHint = "\n\nHINT: This error (10000) usually means your API Token is missing 'Browser Rendering - Edit' permissions. \nRegistering for 'Workers AI' is not enough; you must explicitly add 'Browser Rendering - Edit' to your token.";
+          }
+          errorExit(`Browser Rendering failed.${extraHint}`, data);
         }
       } catch (e) {
         errorExit("Browser rendering request failed", e.message);

@@ -27,7 +27,7 @@ This skill requires `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`.
 
 **Manual Setup:** Alternatively, you can export them in your shell or pass them as parameters (`--account` and `--token`).
 
-**Instruction for the Agent:** If the skill fails due to missing environment variables, check if a `.env` file exists in the workspace. If not, STOP and instruct the user to set the `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` environment variables, or to add them to a `.env` file in their workspace.
+**Instruction for the Agent:** If the skill fails due to missing environment variables, check if a `.env` file exists in the workspace root.
 
 ### Scraping a URL
 
