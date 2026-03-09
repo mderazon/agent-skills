@@ -21,19 +21,19 @@ Use this skill to convert URLs or local files (PDFs, Images, HTML, CSV, Office d
 
 ## Setup & Authentication
 
-This skill requires `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. 
+This skill requires `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`.
 
 **Automatic Setup:** For convenience, the script automatically looks for a `.env` file in the current directory or its parents. If you have a `.env` file in your project root, it will work out of the box.
 
 **Manual Setup:** Alternatively, you can export them in your shell or pass them as parameters (`--account` and `--token`).
 
-**Instruction for the Agent:** If the skill fails due to missing environment variables, check if a `.env` file exists in the workspace. If not, STOP and ask the user for their Cloudflare credentials.
+**Instruction for the Agent:** If the skill fails due to missing environment variables, check if a `.env` file exists in the workspace. If not, STOP and instruct the user to set the `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` environment variables, or to add them to a `.env` file in their workspace.
 
 ### Scraping a URL
 
 ```bash
 # Basic usage (defaults to 'auto' method, trying AI parsing first, then browser rendering)
-bash scripts/render.sh --url "https://example.com"
+node scripts/render.js --url "https://example.com"
 ```
 
 ### Scraping with Options (CSS Selectors, etc.)
@@ -42,14 +42,14 @@ Cloudflare allows filtering elements using `cssSelector` or providing a `hostnam
 
 ```bash
 # Only extract the main content container
-bash scripts/render.sh --url "https://developer.cloudflare.com" \
+node scripts/render.js --url "https://developer.cloudflare.com" \
   --options '{"html": {"cssSelector": "main.content"}}'
 ```
 
 ### Converting a Local File (PDFs, Images, Office Docs)
 
 ```bash
-bash scripts/render.sh --file "report.pdf"
+node scripts/render.js --file "report.pdf"
 ```
 
 ### Converting Images with Language Options
@@ -57,7 +57,7 @@ bash scripts/render.sh --file "report.pdf"
 Image descriptions are generated via AI. You can specify a desired output language for the description (`en`, `it`, `de`, `es`, `fr`, `pt`).
 
 ```bash
-bash scripts/render.sh --file "cat.jpeg" \
+node scripts/render.js --file "cat.jpeg" \
   --options '{"image": {"descriptionLanguage": "es"}}'
 ```
 
@@ -67,13 +67,13 @@ If a site requires complex JavaScript rendering or redirects, use the browser me
 
 ```bash
 # Wait for network to be idle before extracting content
-bash scripts/render.sh --url "https://complex-site.com" --wait "networkidle2"
+node scripts/render.js --url "https://complex-site.com" --wait "networkidle2"
 
 # Wait for a specific element to appear (e.g. price or main content)
-bash scripts/render.sh --url "https://shop.com/prod" --selector ".product-price"
+node scripts/render.js --url "https://shop.com/prod" --selector ".product-price"
 
 # Increase timeout for slow pages (in milliseconds)
-bash scripts/render.sh --url "https://slow-site.com" --timeout 60000
+node scripts/render.js --url "https://slow-site.com" --timeout 60000
 ```
 
 Valid `--wait` options are: `load`, `domcontentloaded` (default), `networkidle0`, and `networkidle2`.
@@ -87,7 +87,7 @@ The `--method auto` capability tests two separate rendering paths:
 
 ## Calling the REST API Directly (Advanced)
 
-If you'd prefer not to use `scripts/render.sh`, here is the curl equivalent for a local file using the `tomarkdown` REST API:
+If you'd prefer not to use `scripts/render.js`, here is the curl equivalent for a local file using the `tomarkdown` REST API:
 
 ```bash
 curl https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/tomarkdown \
