@@ -32,6 +32,14 @@ npx skills add mderazon/agent-skills@cloudflare-tomarkdown
 - 💎 **Structured Data Accuracy:** Extracts JSON-LD schema for reliable retrieval of prices, SKUs, and metadata, avoiding reliance on visual inference.
 - 🔌 **Seamless Integration:** Native `.env` file detection ensures a frictionless "plug-and-play" experience for AI agents.
 
+### [bitwarden-secrets](./skills/bitwarden-secrets)
+
+Manage secrets with [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) CLI (`bws`). Read, create, update, and delete secrets. Agents proactively check Bitwarden before asking the user for credentials.
+
+```bash
+npx skills add mderazon/agent-skills@bitwarden-secrets
+```
+
 ## How to use
 
 Learn more about the open agent skills ecosystem at [skills.sh](https://skills.sh).
