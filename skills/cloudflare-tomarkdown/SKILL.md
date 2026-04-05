@@ -23,11 +23,19 @@ Use this skill to convert URLs or local files (PDFs, Images, HTML, CSV, Office d
 
 This skill requires `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`.
 
-**Automatic Setup:** For convenience, the script automatically looks for a `.env` file in the current directory or its parents. If you have a `.env` file in your project root, it will work out of the box.
+**Automatic Setup:** The script looks for credentials in the following order:
+1. **Environment Variables**: `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`.
+2. **Local `.env`**: A `.env` file in the current working directory (`process.cwd()`).
+3. **Global Config**: `~/.config/cloudflare-tomarkdown/.env` (Standard Linux/macOS path).
+4. **Global Fallback**: `~/.cloudflare-tomarkdown/.env`.
 
-**Manual Setup:** Alternatively, you can export them in your shell or pass them as parameters (`--account` and `--token`).
+**Manual Setup:** You can also pass them as parameters:
+```bash
+node scripts/render.js --url "https://example.com" --account "your_id" --token "your_token"
+```
 
-**Instruction for the Agent:** If the skill fails due to missing environment variables, check if a `.env` file exists in the workspace root.
+**Instruction for the Agent:** If the skill fails due to missing credentials, advise the user to create a global config file at `~/.config/cloudflare-tomarkdown/.env`.
+
 
 ### Scraping a URL
 

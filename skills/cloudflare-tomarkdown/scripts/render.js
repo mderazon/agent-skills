@@ -55,9 +55,14 @@ let accountId = options.account || process.env.CLOUDFLARE_ACCOUNT_ID;
 let apiToken = options.token || process.env.CLOUDFLARE_API_TOKEN;
 
 if (!accountId || !apiToken) {
-  let currentDir = process.cwd();
-  while (true) {
-    const envPath = path.join(currentDir, '.env');
+  const os = require('os');
+  const possiblePaths = [
+    path.join(process.cwd(), '.env'), // Current project override
+    path.join(os.homedir(), '.config', 'cloudflare-tomarkdown', '.env'), // Linux/Mac global config
+    path.join(os.homedir(), '.cloudflare-tomarkdown', '.env') // Fallback global config
+  ];
+
+  for (const envPath of possiblePaths) {
     try {
       if (fs.existsSync(envPath)) {
         const content = fs.readFileSync(envPath, 'utf-8');
@@ -75,9 +80,6 @@ if (!accountId || !apiToken) {
         if (accountId && apiToken) break;
       }
     } catch(e) {}
-    const parentDir = path.dirname(currentDir);
-    if (parentDir === currentDir) break;
-    currentDir = parentDir;
   }
 }
 
